@@ -1,0 +1,30 @@
+# Core App
+streamlit
+
+# Configuration
+python-dotenv
+
+# LLM Services
+openai
+anthropic
+google-generativeai
+requests # Also used by SERPScraper, DeepSeek LLM
+
+# SERP Scraping
+beautifulsoup4
+lxml # Parser for BeautifulSoup
+fake-useragent
+tenacity # For retries in LLM/SERP
+
+# Markdown Utilities
+Markdown
+python-docx # For DOCX conversion fallback
+Pygments # For Markdown code highlighting
+
+# Async Operations
+aiohttp # For async HTTP requests (e.g., Perplexity API)
+httpx # For async/sync HTTP requests (e.g., Anthropic/DeepSeek model list)
+
+# Other potential dependencies (uncomment if used later)
+# pandas
+# numpy
