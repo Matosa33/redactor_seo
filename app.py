@@ -9,6 +9,12 @@ import logging
 from pathlib import Path
 from typing import Dict, Any, Optional, List, Callable, Coroutine # Added typing imports
 import re # Import re for query generation parsing
+import base64 # For image data handling
+import io # For image data handling
+import random # For selecting random sections
+import base64 # For image data handling
+import io # For image data handling
+import random # For selecting random sections
 
 # Explicitly load .env at the very beginning
 from dotenv import load_dotenv
@@ -968,7 +974,84 @@ def setup_content_refiner_tab():
             else:
                 st.warning("Veuillez sélectionner du texte, un modèle et un mot-clé actif.")
 
-    with refine_tabs[1]: st.markdown("### Ajout d'Éléments Visuels (à implémenter)")
+    with refine_tabs[1]:
+        st.markdown("### 🖼️ Génération d'Illustrations")
+        llm_service: LLMService = services['llm_service']
+
+        # Check if Google provider is available for image generation
+        google_available = "Google" in llm_service.get_available_providers()
+        if not google_available:
+            st.warning("La génération d'images nécessite une clé API Google configurée.")
+        else:
+            num_images = st.number_input("Nombre d'images à générer", min_value=1, max_value=10, value=3, step=1, key="refine_num_images")
+            # Use the specific experimental image generation model alias
+            image_model = "gemini-2.0-flash-exp-image-generation"
+            st.info(f"Utilisation du modèle Google pour images: `{image_model}`")
+
+            if st.button("Générer Illustrations", key="refine_generate_images_btn"):
+                article_content = current_article_obj.content
+                if not article_content:
+                    st.error("Le contenu de l'article est vide.")
+                else:
+                    # --- Logic to select sections and generate prompts ---
+                    # Simple approach: Split by H2, remove empty lines, select random non-empty sections
+                    sections = re.split(r'\n## ', article_content) # Split by H2 headings
+                    # Filter out potential empty strings from split and very short sections
+                    valid_sections = [s.strip() for s in sections if len(s.strip()) > 100] # Min length for meaningful prompt
+
+                    if not valid_sections:
+                        st.warning("Impossible de trouver des sections suffisamment longues dans l'article pour générer des prompts.")
+                    else:
+                        num_to_select = min(num_images, len(valid_sections))
+                        selected_sections = random.sample(valid_sections, num_to_select)
+
+                        image_prompts = []
+                        for section in selected_sections:
+                            # Create a concise prompt from the section start
+                            # Add context like the keyword?
+                            prompt_text = f"Illustration pour un article sur '{keyword_name}'. Section: {section[:250]}..." # Limit prompt length
+                            image_prompts.append(prompt_text)
+
+                        st.info(f"Génération de {len(image_prompts)} images avec {image_model}...")
+
+                        # --- Asynchronous Image Generation ---
+                        async def generate_images_async(prompts):
+                            tasks = []
+                            for i, p in enumerate(prompts):
+                                tasks.append(
+                                    llm_service.generate_image(
+                                        prompt=p,
+                                        provider="Google",
+                                        model=image_model
+                                    )
+                                )
+                            results = await asyncio.gather(*tasks, return_exceptions=True)
+                            return results
+
+                        with st.spinner("Génération des images en cours..."):
+                            image_results = asyncio.run(generate_images_async(image_prompts))
+
+                        # --- Display Results ---
+                        st.subheader("Résultats de la Génération d'Images")
+                        for i, result in enumerate(image_results):
+                            st.markdown(f"---")
+                            st.markdown(f"**Prompt {i+1}:** `{image_prompts[i]}`")
+                            if isinstance(result, bytes):
+                                try:
+                                    st.image(result, caption=f"Image {i+1}", use_column_width=True)
+                                    # Provide Markdown code with base64 data URI
+                                    b64_img = base64.b64encode(result).decode()
+                                    # Determine mime type (assuming JPEG for now, might need adjustment)
+                                    mime_type = "image/jpeg" # Or detect from result if possible
+                                    markdown_code = f"![Image {i+1} pour {keyword_name}](data:{mime_type};base64,{b64_img})"
+                                    st.code(markdown_code, language="markdown")
+                                except Exception as display_e:
+                                    st.error(f"Erreur d'affichage de l'image {i+1}: {display_e}")
+                            elif isinstance(result, Exception):
+                                st.error(f"Erreur lors de la génération de l'image {i+1}: {result}")
+                            else:
+                                st.warning(f"Aucune image générée pour le prompt {i+1}.")
+
     with refine_tabs[2]: st.markdown("### Search & Replace Assisté (à implémenter)")
     with refine_tabs[3]: st.markdown("### Prompt Personnalisé (à implémenter)")
 
@@ -1198,7 +1281,94 @@ def setup_content_refiner_tab():
                     except Exception as e: st.error(f"Erreur: {e}")
             else: st.warning("Veuillez sélectionner du texte, un modèle et un mot-clé actif.")
 
-    with refine_tabs[1]: st.markdown("### Ajout d'Éléments Visuels (à implémenter)")
+    with refine_tabs[1]:
+        st.markdown("### 🖼️ Génération d'Illustrations")
+        llm_service: LLMService = services['llm_service']
+
+        # Check if Google provider is available for image generation
+        google_available = "Google" in llm_service.get_available_providers()
+        if not google_available:
+            st.warning("La génération d'images nécessite une clé API Google configurée.")
+        else:
+            num_images = st.number_input("Nombre d'images à générer", min_value=1, max_value=10, value=3, step=1, key="refine_num_images")
+            # Use the specific model alias provided by the user
+            image_model = "gemini-2.0-flash-exp-image-generation"
+            st.info(f"Utilisation du modèle Google: `{image_model}`")
+
+            if st.button("Générer Illustrations", key="refine_generate_images_btn"):
+                article_content = current_article_obj.content
+                if not article_content:
+                    st.error("Le contenu de l'article est vide.")
+                else:
+                    # --- Logic to select sections and generate prompts ---
+                    # Simple approach: Split by H2, remove empty lines, select random non-empty sections
+                    sections = re.split(r'\n## ', article_content) # Split by H2 headings
+                    # Filter out potential empty strings from split and very short sections
+                    valid_sections = [s.strip() for s in sections if len(s.strip()) > 100] # Min length for meaningful prompt
+
+                    if not valid_sections:
+                        st.warning("Impossible de trouver des sections suffisamment longues dans l'article pour générer des prompts.")
+                    else:
+                        num_to_select = min(num_images, len(valid_sections))
+                        selected_sections = random.sample(valid_sections, num_to_select)
+
+                        image_prompts = []
+                        for section in selected_sections:
+                            # Create the most neutral prompt possible, focusing only on the section's start
+                            # Extract first sentence or key phrase from the section as the core subject
+                            first_sentence = section.split('.')[0].strip()
+                            if len(first_sentence) > 200: # Allow slightly more length for subject clarity
+                                first_sentence = first_sentence[:200]
+
+                            # Construct a very neutral prompt, removing all keyword context
+                            prompt_text = f"Sujet principal: {first_sentence}. Style: Photorealistic, detailed, professional tech blog illustration."
+                            image_prompts.append(prompt_text)
+
+                        st.info(f"Génération de {len(image_prompts)} images avec {image_model}...")
+
+                        # --- Asynchronous Image Generation ---
+                        async def generate_images_async(prompts):
+                            tasks = []
+                            for i, p in enumerate(prompts):
+                                tasks.append(
+                                    llm_service.generate_image(
+                                        prompt=p,
+                                        provider="Google",
+                                        model=image_model
+                                    )
+                                )
+                            results = await asyncio.gather(*tasks, return_exceptions=True)
+                            return results
+
+                        with st.spinner("Génération des images en cours..."):
+                            image_results = asyncio.run(generate_images_async(image_prompts))
+
+                        # --- Display Results ---
+                        st.subheader("Résultats de la Génération d'Images")
+                        for i, result in enumerate(image_results):
+                            st.markdown(f"---")
+                            st.markdown(f"**Prompt {i+1}:** `{image_prompts[i]}`")
+                            if isinstance(result, bytes):
+                                try:
+                                    st.image(result, caption=f"Image {i+1}", use_column_width=True)
+                                    # Provide Markdown code with base64 data URI
+                                    b64_img = base64.b64encode(result).decode()
+                                    # Determine mime type (assuming JPEG for now, might need adjustment)
+                                    # Google Gemini often returns PNG or JPEG
+                                    mime_type = "image/png" # Default to PNG, adjust if needed
+                                    # Try to infer mime type (basic check)
+                                    if result.startswith(b'\xff\xd8'): mime_type = "image/jpeg"
+                                    elif result.startswith(b'\x89PNG'): mime_type = "image/png"
+
+                                    markdown_code = f"![Image {i+1} pour {keyword_name}](data:{mime_type};base64,{b64_img})"
+                                    st.code(markdown_code, language="markdown")
+                                except Exception as display_e:
+                                    st.error(f"Erreur d'affichage de l'image {i+1}: {display_e}")
+                            elif isinstance(result, Exception):
+                                st.error(f"Erreur lors de la génération de l'image {i+1}: {result}")
+                            else:
+                                st.warning(f"Aucune image générée pour le prompt {i+1}.")
+
     with refine_tabs[2]: st.markdown("### Search & Replace Assisté (à implémenter)")
     with refine_tabs[3]: st.markdown("### Prompt Personnalisé (à implémenter)")
 

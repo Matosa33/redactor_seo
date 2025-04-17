@@ -366,6 +366,64 @@ class LLMService:
                 else: logger.warning(f"Fallback provider {fb_provider} not available (missing API key).")
             logger.error("All providers failed."); raise Exception("All providers failed.") from e
 
+    async def generate_image(
+        self,
+        prompt: str,
+        provider: str, # Expecting "Google" for now
+        model: str, # Expecting "gemini-2.0-flash-exp-image-generation" or similar
+        # Add other potential parameters like aspect ratio, style, etc. if needed later
+    ) -> Optional[bytes]: # Return image bytes or None on error
+        """
+        Generates an image using the specified provider and model.
+        Currently supports Google Gemini image generation models.
+        """
+        provider_lower = provider.lower()
+        logger.info(f"Attempting image generation with {provider} ({model}) for prompt: '{prompt[:50]}...'")
+
+        if provider_lower != "google":
+            logger.error(f"Image generation currently only supported for Google, not {provider}.")
+            return None
+        if not self.api_keys.get("google"):
+            raise ValueError("API key for Google is missing.")
+        if not self.provider_library_available["google"]:
+            raise ValueError("Google Generative AI library not available.")
+
+        try:
+            # Use the specific model name provided by the user
+            image_model = self.genai.GenerativeModel(model_name=model)
+
+            # Generate image content using the prompt
+            # The Google SDK handles image generation via generate_content for specific models
+            response = await asyncio.to_thread(lambda: image_model.generate_content(prompt))
+
+            # Process the response to extract image data
+            # Based on Google SDK examples, image data is often in response.parts[0].blob.data
+            if response.parts:
+                # Find the first part that looks like an image blob
+                image_part = next((part for part in response.parts if hasattr(part, 'blob') and hasattr(part.blob, 'mime_type') and 'image' in part.blob.mime_type), None)
+                if image_part and hasattr(image_part.blob, 'data'):
+                    logger.info(f"Successfully generated image for prompt: '{prompt[:50]}...'")
+                    return image_part.blob.data # Return the image bytes
+                else:
+                    logger.warning(f"No valid image blob found in Gemini response parts for prompt: '{prompt[:50]}...'. Parts: {response.parts}")
+                    return None
+            elif hasattr(response, 'candidates') and not response.candidates:
+                 # Handle cases where generation might be blocked (safety filters, etc.)
+                 feedback = getattr(response, 'prompt_feedback', 'N/A')
+                 logger.warning(f"Gemini image generation blocked or empty (no candidates). Feedback: {feedback}. Prompt: '{prompt[:50]}...'")
+                 # Optionally, return an error message or raise a specific exception here
+                 return None
+            else:
+                # Log unexpected response structure
+                logger.warning(f"Unexpected response structure from Gemini image generation: {response}")
+                return None
+
+        except Exception as e:
+            logger.error(f"Error generating image with {provider} ({model}): {e}", exc_info=True)
+            # Consider specific error handling (e.g., for quota) if needed
+            return None
+
+
 # Example Usage
 if __name__ == "__main__":
     async def main():

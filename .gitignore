@@ -25,6 +25,9 @@ MANIFEST
 # Dossier cache
 cache/
 
+# Dossier projets (contient les données générées)
+projects/
+
 # Environnements virtuels
 venv/
 ENV/
