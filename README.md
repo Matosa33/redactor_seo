@@ -28,15 +28,18 @@
 ```
 
 # 2. Installer les dépendances
+```bash
 pip install -r requirements.txt
-
+```
 # 3. Configurer les clés API
+```bash
 cp .env.example .env  # Créez votre fichier .env s'il n'existe pas
 nano .env          # Ajoutez vos clés API (OpenAI, Google, BrightData, etc.)
-
+```
 # 4. Lancer l'application Streamlit
+```bash
 streamlit run app.py
-
+```
 ## 📦 Stack Technique Principale
 
 ```mermaid
@@ -59,8 +62,20 @@ pie
 - **Gestion Dépendances:** `pip` et `requirements.txt`
 - **Configuration:** `python-dotenv`
 
-## Architecture Simplifiée
 
+## Workflow
+   ```mermaid
+   sequenceDiagram
+       Utilisateur->>+SERPScraper: Lance l'analyse SERP
+       SERPScraper->>+ResearchEngine: Génère les requêtes
+       ResearchEngine->>+Perplexity: Exécute les recherches
+       Perplexity-->>-ResearchEngine: Résultats bruts
+       ResearchEngine->>+ContentEngine: Structure les données
+       ContentEngine->>+LLM: Génère le plan
+       LLM-->>-ContentEngine: Plan structuré
+       ContentEngine->>+UI: Affiche le résultat
+   ```
+## Architecture détaillée
 ```mermaid
 graph TD
     subgraph "Interface Utilisateur (app.py)"
