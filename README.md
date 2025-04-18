@@ -23,7 +23,7 @@
 
 # 1. Cloner le dépôt (si disponible)
 ```bash
-# git clone [https://github.com/VOTRE_USER/readctor_seo](https://github.com/VOTRE_USER/readctor_seo) 
+# git clone [https://github.com/VOTRE_USER/redactor_seo](https://github.com/VOTRE_USER/redactor_seo) 
 # cd readctor_seo
 ```
 
