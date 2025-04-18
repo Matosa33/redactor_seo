@@ -15,10 +15,10 @@
 
 | Catégorie         | Fonctionnalités                                                                 |
 |-------------------|---------------------------------------------------------------------------------|
-| 🔎 Analyse SERP   | Scraping complet<br> • Extraction H2/H3 • Benchmark meta-titles • Cartographie sémantique |
-| 🧠 Intelligence    | Génération de plans • Optimisation LLM • Détection d'opportunités • Alertes SEO |
-| 📈 Reporting       | Export PDF/HTML • Dashboard interactif • Comparatif historique • Stats temps réel |
-| ⚙️ Infrastructure  | Proxy rotatif • Cache intelligent • Architecture modulaire • API REST          |
+| 🔎 Analyse SERP   | • Scraping complet<br> • Extraction H2/H3<br> • Benchmark meta-titles<br> • Cartographie sémantique |
+| 🧠 Intelligence    | Génération de plans<br> • Optimisation LLM<br> • Détection d'opportunités |
+| 📈 Reporting       | Export PDF/HTML(en cours)<br> • Dashboard interactif<br> • Comparatif historique(en cours)<br> • Stats fraîches et sourcées |
+| ⚙️ Infrastructure  | Proxy rotatif<br> • Cache intelligent<br> • Architecture modulaire<br> • API REST |
 
 ## 🚀 Quick Start
 
