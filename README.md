@@ -115,7 +115,7 @@ graph TD
 
     G -->|Scrape Sites| R
 
-    H -->|Exécute Tâches (Plan/Article)| D
+    H -->|Exécute Tâches Plan ou Article| D  // Ligne Corrigée
 
     B -->|Lit/Écrit Projets| T
 
