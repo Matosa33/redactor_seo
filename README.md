@@ -367,5 +367,3 @@ Basé sur l'analyse des prompts et des exemples de plans (`coder_avec_Cline/plan
     * Testez les différents boutons d'export (JSON, MD, HTML, DOCX, WP) pour le plan et l'article.
 
 ```
-
-Ce README est généré en analysant la structure du code, les imports, les classes, les fonctions et les interactions observées dans `app.py` et les différents modules. Il évite d'inclure des fonctionnalités mentionnées dans votre exemple mais non trouvées dans le code fourni (comme le scoring SERP, TF-IDF, Parquet, Pydantic, Jinja2, etc.).
