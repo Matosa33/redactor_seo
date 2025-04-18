@@ -17,7 +17,18 @@
 | 🧠 **Recherche IA** | • Génération dynamique de requêtes de recherche basées sur le mot-clé/SERP.<br> • Intégration Perplexity API (si clé fournie) ou Simulation LLM.<br> • Extraction d'insights structurés à partir des résultats de recherche. |
 | ✍️ **Génération Contenu** | • Génération de Plans d'articles structurés (JSON) via LLM, intégrant SERP/Recherche.<br> • Rédaction d'Articles (Markdown) basée sur le plan et la recherche.<br> • Support multi-LLM (OpenAI, Anthropic, Google, DeepSeek). |
 | ✨ **Fonctions Add.** | • Traitement par Lots Asynchrone (Plans/Articles) avec suivi de progression.<br> • Génération d'images d'illustration via Google Gemini.<br> • Export des plans/articles (JSON, MD, HTML, DOCX, WordPress HTML). |
-| 🖥️ **Interface & Infra.** | • Interface utilisateur basée sur Streamlit avec onglets.<br> • Configuration via fichier `.env`.<br> • Architecture modulaire (Core / Modules).                               |
+| 🖥️ **Interface & Infra.** | • Interface utilisateur basée sur Streamlit avec onglets.<br> • Configuration via fichier `.env`.<br> • Architecture modulaire (Core / Modules).    
+
+## INTERFACE
+![image](https://github.com/user-attachments/assets/3859e7c9-7e38-464d-bb38-7cc458f78890)
+
+### Exemple article d'actualité (démo fraicheur de la donnée)
+https://allofmeta.com/llama-4-scandales/
+[[[Article récent](https://allofmeta.com/llama-4-scandales/)]
+![image](https://github.com/user-attachments/assets/599e8c6d-2106-4446-9add-7a0241a210cf)
+
+
+
 
 ## 🚀 Démarrage Rapide
 
