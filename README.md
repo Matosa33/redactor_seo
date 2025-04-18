@@ -8,7 +8,7 @@
 **L'outil Streamlit pour l'analyse SERP, la recherche IA et la génération de contenu SEO (Plans & Articles)**
 *Générez des plans d'articles structurés et des rédactions complètes basés sur les données SERP, le contenu des concurrents et des recherches IA optionnelles.*
 
-## 🌟 Fonctionnalités Réellement Implémentées
+## 🌟 Fonctionnalités Implémentées
 
 | Catégorie                | Fonctionnalités                                                                                                                                 |
 | :----------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------- |
