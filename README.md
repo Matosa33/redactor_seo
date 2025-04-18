@@ -1,8 +1,3 @@
-Okay, je comprends parfaitement. Vous souhaitez un README qui reflète **uniquement et précisément** les fonctionnalités présentes dans le code fourni, tout en conservant une présentation soignée et professionnelle similaire à l'exemple.
-
-Analysons l'application réelle basée sur les fichiers pour créer ce README :
-
-```markdown
 # 🚀 SEO Content Generator Pro - Rédacteur SEO IA
 
 ![version](https://img.shields.io/badge/version-1.0-blue) 
@@ -38,7 +33,6 @@ nano .env          # Ajoutez vos clés API (OpenAI, Google, BrightData, etc.)
 
 # 4. Lancer l'application Streamlit
 streamlit run app.py
-```
 
 ## 📦 Stack Technique Principale
 
