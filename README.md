@@ -21,10 +21,11 @@
 
 ## 🚀 Démarrage Rapide
 
-```bash
 # 1. Cloner le dépôt (si disponible)
+```bash
 # git clone [https://github.com/VOTRE_USER/readctor_seo](https://github.com/VOTRE_USER/readctor_seo) 
 # cd readctor_seo
+```
 
 # 2. Installer les dépendances
 pip install -r requirements.txt
