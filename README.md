@@ -3,7 +3,9 @@
 ![version](https://img.shields.io/badge/version-1.0-blue) 
 ![license](https://img.shields.io/badge/license--Assuming_MIT-green) 
 ![python](https://img.shields.io/badge/python-3.10%2B-blue)
-[![Open in GitHub Codespaces](https://img.shields.io/badge/GitHub_Codespaces-Open-blue?logo=github)](https://codespaces.new/Mathieu-IA/readctor_seo) **L'outil Streamlit pour l'analyse SERP, la recherche IA et la génération de contenu SEO (Plans & Articles)**
+[![Open in GitHub Codespaces](https://img.shields.io/badge/GitHub_Codespaces-Open-blue?logo=github)](https://codespaces.new/Mathieu-IA/readctor_seo) 
+
+**L'outil Streamlit pour l'analyse SERP, la recherche IA et la génération de contenu SEO (Plans & Articles)**
 *Générez des plans d'articles structurés et des rédactions complètes basés sur les données SERP, le contenu des concurrents et des recherches IA optionnelles.*
 
 ## 🌟 Fonctionnalités Réellement Implémentées
