@@ -33,10 +33,10 @@ https://allofmeta.com/llama-4-scandales/
 ## 🚀 Démarrage Rapide
 
 # 1. Cloner le dépôt (si disponible)
-```bash
+
 # git clone [https://github.com/Matosa33/redactor_seo](https://github.com/Matosa33/redactor_seo) 
 # cd readctor_seo
-```
+
 
 # 2. Installer les dépendances
 ```bash
