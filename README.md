@@ -34,7 +34,7 @@ https://allofmeta.com/llama-4-scandales/
 
 # 1. Cloner le dépôt (si disponible)
 ```bash
-# git clone [https://github.com/VOTRE_USER/redactor_seo](https://github.com/VOTRE_USER/redactor_seo) 
+# git clone [https://github.com/Matosa33/redactor_seo](https://github.com/Matosa33/redactor_seo) 
 # cd readctor_seo
 ```
 
